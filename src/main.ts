@@ -3,6 +3,9 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
 import * as session from 'express-session';
+import * as filestore from 'session-file-store';
+
+const FileStore = filestore(session);
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -13,6 +16,7 @@ async function bootstrap() {
   */
   app.use(
     session({
+      store: new FileStore(),
       secret: 'my-secret',
       resave: false,
       saveUninitialized: false,
